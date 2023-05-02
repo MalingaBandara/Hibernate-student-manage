@@ -38,8 +38,7 @@ public class Program {
         this.credit = credit;
     }
 
-    public Program() {
-    }
+    public Program() {}
 
     public Program(long id, String title, int credit) {
         this.id = id;

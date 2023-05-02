@@ -28,8 +28,7 @@ public class Book {
         this.title = title;
     }
 
-    public Book() {
-    }
+    public Book() {}
 
     public Book(long id, String title) {
         this.id = id;

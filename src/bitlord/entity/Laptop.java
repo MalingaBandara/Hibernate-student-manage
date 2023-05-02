@@ -5,44 +5,59 @@ import javax.persistence.*;
 @Entity
 public class Laptop {
 
-
-    @Id
-    @GeneratedValue( strategy = GenerationType.IDENTITY)
-    @Column( name = "laptop_id" )
-    private long id;
-
-    private String brand;
+                        @Id
+                        @GeneratedValue( strategy = GenerationType.IDENTITY)
+                        @Column( name = "laptop_id" )
+                        private long id;
+                        private String brand;
 
 
-    public long getId() {
-        return id;
+// ---------------- Mapping --------------
+
+    @OneToOne
+    @JoinColumn ( name = "student_id" )
+    private Student student;
+
+// ---------------- Mapping --------------
+
+
+    public Student getStudent() {
+        return student;
     }
 
-    public void setId(long id) {
-        this.id = id;
+    public void setStudent(Student student) {
+        this.student = student;
     }
 
-    public String getBrand() {
-        return brand;
-    }
 
-    public void setBrand(String brand) {
-        this.brand = brand;
-    }
+                        public long getId() {
+                            return id;
+                        }
 
-    public Laptop() {
-    }
+                        public void setId(long id) {
+                            this.id = id;
+                        }
 
-    public Laptop(long id, String brand) {
-        this.id = id;
-        this.brand = brand;
-    }
+                        public String getBrand() {
+                            return brand;
+                        }
 
-    @Override
-    public String toString() {
-        return "Laptop{" +
-                "id=" + id +
-                ", brand='" + brand + '\'' +
-                '}';
-    }
+                        public void setBrand(String brand) {
+                            this.brand = brand;
+                        }
+
+                        public Laptop() {}
+
+                        public Laptop(long id, String brand) {
+                            this.id = id;
+                            this.brand = brand;
+                        }
+
+                        @Override
+                        public String toString() {
+                            return "Laptop{" +
+                                    "id=" + id +
+                                    ", brand='" + brand + '\'' +
+                                    '}';
+                        }
 }
