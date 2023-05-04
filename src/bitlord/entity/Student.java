@@ -1,6 +1,8 @@
 package bitlord.entity;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 public class Student {
@@ -14,15 +16,45 @@ public class Student {
 
 
 // ---------------- Mapping --------------
-
     @OneToOne ( cascade = CascadeType.ALL,
                 mappedBy = "student",
                 fetch = FetchType.EAGER
             )
     private Laptop laptop;
 
+// -------------------
+
+    @OneToMany (
+            cascade = CascadeType.ALL,
+            mappedBy = "student",
+            fetch = FetchType.EAGER
+    )
+    private List<Book> books = new ArrayList<>();
+
+
+// -------------------
+
+    @ManyToMany ( mappedBy = "students" )
+    private List<Program> programs = new ArrayList<>();
+
 // ---------------- Mapping --------------
 
+
+    public List<Program> getPrograms() {
+        return programs;
+    }
+
+    public void setPrograms(List<Program> programs) {
+        this.programs = programs;
+    }
+
+    public List<Book> getBooks() {
+        return books;
+    }
+
+    public void setBooks(List<Book> books) {
+        this.books = books;
+    }
 
     public Laptop getLaptop() {
         return laptop;
