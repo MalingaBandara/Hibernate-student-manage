@@ -3,9 +3,16 @@ package bitlord.controller;
 import bitlord.bo.BoFactory;
 import bitlord.bo.custom.StudentBo;
 import bitlord.dto.StudentDto;
+import bitlord.view.tm.StudentTM;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.scene.control.Alert;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 
 import java.sql.SQLException;
 
@@ -15,8 +22,21 @@ public class MainFormController {
 
   private final StudentBo studentBo = BoFactory.getInstance().getBo(BoFactory.BoType.STUDENT);
 
+    public TableView<StudentTM> tblStudents;
+    public TableColumn colStudentId;
+    public TableColumn colStudentName;
+    public TableColumn colContctNumber;
+    public TableColumn colSeeMore;
+    public TableColumn colDelete;
 
-  public void initialize() throws SQLException, ClassNotFoundException {
+
+    public void initialize() throws SQLException, ClassNotFoundException {
+
+        colStudentId.setCellValueFactory( new PropertyValueFactory<>("id") );
+        colStudentName.setCellValueFactory( new PropertyValueFactory<>("name") );
+        colContctNumber.setCellValueFactory( new PropertyValueFactory<>("contact") );
+        colSeeMore.setCellValueFactory( new PropertyValueFactory<>("seeMoreBtn") );
+        colDelete.setCellValueFactory( new PropertyValueFactory<>("deleteBtn") );
 
       loadAllStudents( );
 
@@ -24,7 +44,22 @@ public class MainFormController {
 
     private void loadAllStudents() throws SQLException, ClassNotFoundException {
 
-        System.out.println( studentBo.findAllStudents() );
+        ObservableList< StudentTM > tmList = FXCollections.observableArrayList();
+
+        for ( StudentDto dto : studentBo.findAllStudents() ) {
+
+            Button deleteButton = new Button( "Delete" ); // create button  [import javafx.scene.control.*;] <-- use this
+            deleteButton.setStyle("-fx-background-color: #c0392b");
+            Button seeMoreButton = new Button( "See More" ); // create button
+            seeMoreButton.setStyle("-fx-background-color: #298069");
+
+            StudentTM tm = new StudentTM(dto.getId(), dto.getName(), dto.getContact(), deleteButton, seeMoreButton );
+
+            tmList.add( tm );
+
+        }
+
+        tblStudents.setItems( tmList );
 
     }
 
