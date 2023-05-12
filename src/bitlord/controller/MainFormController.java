@@ -7,11 +7,26 @@ import javafx.event.ActionEvent;
 import javafx.scene.control.Alert;
 import javafx.scene.control.TextField;
 
+import java.sql.SQLException;
+
 public class MainFormController {
     public TextField txtName;
     public TextField txtContact;
 
   private final StudentBo studentBo = BoFactory.getInstance().getBo(BoFactory.BoType.STUDENT);
+
+
+  public void initialize() throws SQLException, ClassNotFoundException {
+
+      loadAllStudents( );
+
+  }
+
+    private void loadAllStudents() throws SQLException, ClassNotFoundException {
+
+        System.out.println( studentBo.findAllStudents() );
+
+    }
 
 
     public void btnSaveStudentOnAction(ActionEvent actionEvent) {

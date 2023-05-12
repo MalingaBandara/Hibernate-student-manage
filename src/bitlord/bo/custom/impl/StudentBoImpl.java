@@ -7,6 +7,8 @@ import bitlord.dto.StudentDto;
 import bitlord.entity.Student;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class StudentBoImpl implements StudentBo {
 
@@ -21,6 +23,26 @@ public class StudentBoImpl implements StudentBo {
         student.setContact( dto.getContact() );
 
         studentDao.save( student );
+
+    }
+
+    @Override
+    public List<StudentDto> findAllStudents() throws SQLException, ClassNotFoundException {
+
+        ArrayList< StudentDto > dtos = new ArrayList<>(); // array list to save student data
+
+        for ( Student s: studentDao.findAll() ) {
+
+            StudentDto dto = new StudentDto( s.getId() , s.getName(), s.getContact() ); // create dto object to assign for each values
+
+            dto.setBooks( s.getBooks() ); // assign child table data
+            dto.setLaptop( s.getLaptop() ); // assign child table data
+
+            dtos.add( dto ); // assign dto to array list
+
+        }
+
+        return dtos; // return array list of dto
 
     }
 
