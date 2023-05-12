@@ -2,14 +2,25 @@ package bitlord.dao.custom.impl;
 
 import bitlord.dao.custom.StudentDao;
 import bitlord.entity.Student;
+import bitlord.util.HibernateUtil;
+import org.hibernate.Session;
 
 import java.sql.SQLException;
 import java.util.List;
 
-public class StudentImpl implements StudentDao {
+public class StudentDaoImpl implements StudentDao {
 
     @Override
     public void save(Student student) throws SQLException, ClassNotFoundException {
+
+        try ( Session session = HibernateUtil.getInstance().getSession() )  {
+            session.beginTransaction();
+            session.save( student );
+
+            session.getTransaction().commit();
+
+        }
+
 
     }
 

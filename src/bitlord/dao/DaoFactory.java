@@ -1,6 +1,6 @@
 package bitlord.dao;
 
-import bitlord.dao.custom.impl.StudentImpl;
+import bitlord.dao.custom.impl.StudentDaoImpl;
 
 public class DaoFactory {
 
@@ -13,7 +13,7 @@ public class DaoFactory {
     }
 
 
-    public static  DaoFactory getDaoFactory() {
+    public static  DaoFactory getInstance() {
 
         return daoFactory == null ? daoFactory= new DaoFactory() : daoFactory;
 
@@ -24,7 +24,7 @@ public class DaoFactory {
         switch ( type ) {
 
             case STUDENT:
-                return (T) new StudentImpl();
+                return (T) new StudentDaoImpl();
 
             case BOOK:
                 return  null;
