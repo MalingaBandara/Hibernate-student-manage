@@ -51,4 +51,17 @@ public class StudentBoImpl implements StudentBo {
         studentDao.delete( id );
     }
 
+    @Override
+    public void updateStudent(StudentDto dto) throws SQLException, ClassNotFoundException {
+
+        Student student = new Student();
+
+        student.setId( dto.getId() );
+        student.setName( dto.getName() );
+        student.setContact( dto.getContact() );
+
+        studentDao.update( student );
+
+    }
+
 }

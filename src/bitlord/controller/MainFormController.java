@@ -29,19 +29,51 @@ public class MainFormController {
     public TableColumn colContctNumber;
     public TableColumn colSeeMore;
     public TableColumn colDelete;
+    public Button btnStudentSave;
 
 
     public void initialize() throws SQLException, ClassNotFoundException {
 
-        colStudentId.setCellValueFactory( new PropertyValueFactory<>("id") );
-        colStudentName.setCellValueFactory( new PropertyValueFactory<>("name") );
-        colContctNumber.setCellValueFactory( new PropertyValueFactory<>("contact") );
-        colSeeMore.setCellValueFactory( new PropertyValueFactory<>("seeMoreBtn") );
-        colDelete.setCellValueFactory( new PropertyValueFactory<>("deleteBtn") );
 
-      loadAllStudents( );
+                colStudentId.setCellValueFactory( new PropertyValueFactory<>("id") );
+                colStudentName.setCellValueFactory( new PropertyValueFactory<>("name") );
+                colContctNumber.setCellValueFactory( new PropertyValueFactory<>("contact") );
+                colSeeMore.setCellValueFactory( new PropertyValueFactory<>("seeMoreBtn") );
+                colDelete.setCellValueFactory( new PropertyValueFactory<>("deleteBtn") );
+
+
+            loadAllStudents( );
+
+      // ------------------ Listener ------------------
+
+        tblStudents.getSelectionModel().selectedItemProperty().addListener( (observable, oldValue, newValue) -> {
+
+                if ( newValue != null ) {
+
+                    selectedStudentTm = newValue;
+                    txtName.setText( newValue.getName() );
+                    txtContact.setText( newValue.getContact() );
+
+                    btnStudentSave.setText( "Update Student" ); // change  button name
+
+                }
+
+        } );
+
+      // ------------------ Listener ------------------
+
 
   }
+
+private StudentTM selectedStudentTm = null ; // assign selected values
+
+
+    public void newStudentOnAction(ActionEvent actionEvent) {
+
+        btnStudentSave.setText( "Save Student" );
+        selectedStudentTm = null; // remove selected recode
+
+    }
 
     private void loadAllStudents() throws SQLException, ClassNotFoundException {
 
@@ -98,15 +130,49 @@ public class MainFormController {
         dto.setName( txtName.getText() );
         dto.setContact( txtContact.getText() );
 
-        try{
+            // -------------- Update Student -------- //
 
-            studentBo.saveStudent( dto );
-            new Alert( Alert.AlertType.INFORMATION, "Student Saved" ).show();
-            loadAllStudents();
+                    if ( btnStudentSave.getText().equals( "Update Student" ) ) {
 
-        }catch ( Exception e ){
-            new Alert( Alert.AlertType.ERROR, "Try Again" ).show();
-        }
+                        if ( selectedStudentTm == null ){ // if user not selected
+                            new Alert( Alert.AlertType.ERROR, "Try Again" ).show();
+                            return;
+                        }
+
+                        try{
+
+                            dto.setId(selectedStudentTm.getId() );
+
+                            studentBo.updateStudent( dto );
+
+                            new Alert( Alert.AlertType.INFORMATION, "Student Updated" ).show();
+                                        selectedStudentTm = null; // remove selected recode
+                                    btnStudentSave.setText( "Save Student" );
+                            loadAllStudents();
+
+                        }catch ( Exception e ){
+                            new Alert( Alert.AlertType.ERROR, "Try Again" ).show();
+                        }
+
+                    }
+
+            // -------------- ***** -------- //
+
+                                // Save student
+                            else {
+
+                                try{
+
+                                    studentBo.saveStudent( dto );
+                                    new Alert( Alert.AlertType.INFORMATION, "Student Saved" ).show();
+                                    loadAllStudents();
+
+                                }catch ( Exception e ){
+                                    new Alert( Alert.AlertType.ERROR, "Try Again" ).show();
+                                }
+
+                            } // ********
 
     }
+
 }
