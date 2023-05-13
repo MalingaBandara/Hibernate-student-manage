@@ -46,4 +46,9 @@ public class StudentBoImpl implements StudentBo {
 
     }
 
+    @Override
+    public void deleteStudentById(long id) throws SQLException, ClassNotFoundException {
+        studentDao.delete( id );
+    }
+
 }

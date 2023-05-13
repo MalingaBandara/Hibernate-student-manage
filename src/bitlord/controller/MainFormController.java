@@ -15,6 +15,7 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 
 import java.sql.SQLException;
+import java.util.Optional;
 
 public class MainFormController {
     public TextField txtName;
@@ -57,10 +58,36 @@ public class MainFormController {
 
             tmList.add( tm );
 
+
+            // delete student
+            deleteButton.setOnAction( e-> {
+
+                Alert alert = new Alert( Alert.AlertType.CONFIRMATION, "Are you sure?" , ButtonType.YES, ButtonType.NO); // ask confirmation from user
+
+                Optional<ButtonType> selectedDuttonData = alert.showAndWait(); // asign
+
+                        if (selectedDuttonData.get().equals( ButtonType.YES ) ) {
+
+                                try {
+
+                                    studentBo.deleteStudentById( tm.getId() );
+
+                                    new Alert( Alert.AlertType.INFORMATION, "Student Deleted" ).show();
+                                    loadAllStudents();
+
+                                } catch (Exception exception ){
+                                    new Alert( Alert.AlertType.ERROR, "Try Again" ).show();
+                                }
+
+                        }
+
+            } ); // **************
+
+
         }
 
         tblStudents.setItems( tmList );
-
+            tblStudents.refresh(); // refresh table
     }
 
 
@@ -75,6 +102,7 @@ public class MainFormController {
 
             studentBo.saveStudent( dto );
             new Alert( Alert.AlertType.INFORMATION, "Student Saved" ).show();
+            loadAllStudents();
 
         }catch ( Exception e ){
             new Alert( Alert.AlertType.ERROR, "Try Again" ).show();
