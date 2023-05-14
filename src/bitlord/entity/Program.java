@@ -20,23 +20,19 @@ public class Program {
 
 // ---------------- Mapping --------------
 
-    @ManyToMany
-    @JoinTable (
-                name = "registration",
-                joinColumns = @JoinColumn( name = "program_id" ),
-                inverseJoinColumns = @JoinColumn( name = "student_id" )
-        )
-    private List<Student> students = new ArrayList<>();
+
+    @OneToMany( mappedBy = "program" )
+    private List<Registration> registrations = new ArrayList<>();
 
 // ---------------- Mapping --------------
 
 
-    public List<Student> getStudents() {
-        return students;
+    public List<Registration> getRegistrations() {
+        return registrations;
     }
 
-    public void setStudents(List<Student> students) {
-        this.students = students;
+    public void setRegistrations(List<Registration> registrations) {
+        this.registrations = registrations;
     }
 
                                 public long getId() {

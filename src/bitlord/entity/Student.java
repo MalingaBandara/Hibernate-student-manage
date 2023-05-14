@@ -34,18 +34,18 @@ public class Student {
 
 // -------------------
 
-    @ManyToMany ( mappedBy = "students" )
-    private List<Program> programs = new ArrayList<>();
+    @OneToMany ( mappedBy = "student" )
+    private List<Registration> registrations = new ArrayList<>();
 
 // ---------------- Mapping --------------
 
 
-    public List<Program> getPrograms() {
-        return programs;
+    public List<Registration> getRegistrations() {
+        return registrations;
     }
 
-    public void setPrograms(List<Program> programs) {
-        this.programs = programs;
+    public void setRegistrations(List<Registration> registrations) {
+        this.registrations = registrations;
     }
 
     public List<Book> getBooks() {

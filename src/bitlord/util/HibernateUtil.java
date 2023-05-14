@@ -1,9 +1,6 @@
 package bitlord.util;
 
-import bitlord.entity.Book;
-import bitlord.entity.Laptop;
-import bitlord.entity.Program;
-import bitlord.entity.Student;
+import bitlord.entity.*;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.Metadata;
@@ -36,6 +33,7 @@ public class HibernateUtil {
                 .addAnnotatedClass(Program.class)
                 .addAnnotatedClass(Laptop.class)
                 .addAnnotatedClass(Book.class)
+                .addAnnotatedClass(Registration.class)
                 .getMetadataBuilder()
                 .applyImplicitNamingStrategy(ImplicitNamingStrategyJpaCompliantImpl.INSTANCE)
                 .build();
