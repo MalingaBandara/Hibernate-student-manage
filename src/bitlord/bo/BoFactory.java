@@ -1,5 +1,6 @@
 package bitlord.bo;
 
+import bitlord.bo.custom.impl.LaptopBoImpl;
 import bitlord.bo.custom.impl.StudentBoImpl;
 
 public class BoFactory {
@@ -30,7 +31,7 @@ public class BoFactory {
                 return  null;
 
             case LAPTOP:
-                return null;
+                return (T) new LaptopBoImpl();
 
             case PROGRAM:
                 return null;

@@ -1,7 +1,9 @@
 package bitlord.controller;
 
 import bitlord.bo.BoFactory;
+import bitlord.bo.custom.LaptopBo;
 import bitlord.bo.custom.StudentBo;
+import bitlord.dto.CreateLaptopDto;
 import bitlord.dto.StudentDto;
 import bitlord.entity.Student;
 import bitlord.view.tm.StudentTM;
@@ -24,6 +26,8 @@ public class MainFormController {
 
   private final StudentBo studentBo = BoFactory.getInstance().getBo(BoFactory.BoType.STUDENT);
 
+  private final LaptopBo laptopBo = BoFactory.getInstance().getBo(BoFactory.BoType.LAPTOP);
+
     public TableView<StudentTM> tblStudents;
     public TableColumn colStudentId;
     public TableColumn colStudentName;
@@ -37,44 +41,10 @@ public class MainFormController {
     public TableColumn colLapId;
     public TableColumn colBrand;
     public TableColumn colDeleteLap;
-    public ComboBox cmbStudent;
+    public ComboBox<Long> cmbStudent;
+    public Button btnLaptopSave;
 
 
-    public void initialize() throws SQLException, ClassNotFoundException {
-
-
-                colStudentId.setCellValueFactory( new PropertyValueFactory<>("id") );
-                colStudentName.setCellValueFactory( new PropertyValueFactory<>("name") );
-                colContctNumber.setCellValueFactory( new PropertyValueFactory<>("contact") );
-                colSeeMore.setCellValueFactory( new PropertyValueFactory<>("seeMoreBtn") );
-                colDelete.setCellValueFactory( new PropertyValueFactory<>("deleteBtn") );
-
-
-                    loadAllStudents( );
-
-            loadAllStudentsForLaptopSection(); // assign student data to combo box in laptop ui
-
-      // ------------------ Listener ------------------
-
-        tblStudents.getSelectionModel().selectedItemProperty().addListener( (observable, oldValue, newValue) -> {
-
-                if ( newValue != null ) {
-
-                    selectedStudentTm = newValue;
-                    txtName.setText( newValue.getName() );
-                    txtContact.setText( newValue.getContact() );
-
-                    btnStudentSave.setText( "Update Student" ); // change  button name
-
-                }
-
-        } );
-
-      // ------------------ Listener ------------------
-        
-  }
-
-  
     private void loadAllStudentsForLaptopSection() throws SQLException, ClassNotFoundException  {
 
         ObservableList< Long > obList = FXCollections.observableArrayList(); // Create List to assign particular student Ids
@@ -196,6 +166,59 @@ public class MainFormController {
 
                             } // ********
 
+    }
+
+    public void initialize() throws SQLException, ClassNotFoundException {
+
+
+        colStudentId.setCellValueFactory( new PropertyValueFactory<>("id") );
+        colStudentName.setCellValueFactory( new PropertyValueFactory<>("name") );
+        colContctNumber.setCellValueFactory( new PropertyValueFactory<>("contact") );
+        colSeeMore.setCellValueFactory( new PropertyValueFactory<>("seeMoreBtn") );
+        colDelete.setCellValueFactory( new PropertyValueFactory<>("deleteBtn") );
+
+
+        loadAllStudents( );
+
+        loadAllStudentsForLaptopSection(); // assign student data to combo box in laptop ui
+
+        // ------------------ Listener ------------------
+
+        tblStudents.getSelectionModel().selectedItemProperty().addListener( (observable, oldValue, newValue) -> {
+
+            if ( newValue != null ) {
+
+                selectedStudentTm = newValue;
+                txtName.setText( newValue.getName() );
+                txtContact.setText( newValue.getContact() );
+
+                btnStudentSave.setText( "Update Student" ); // change  button name
+
+            }
+
+        } );
+
+        // ------------------ Listener ------------------
+
+    }
+
+    public void btnSaveLaptopOnAction(ActionEvent actionEvent) {
+
+        try{
+
+            laptopBo.saveLaptop(  new CreateLaptopDto( cmbStudent.getValue(), txtLapBrand.getText() ) );
+
+            new Alert( Alert.AlertType.INFORMATION, "Laptop Saved" ).show();
+
+            loadAllLaptops();
+
+        }catch ( Exception e ){
+            new Alert( Alert.AlertType.ERROR, "Try Again" ).show();
+        }
+
+    }
+
+    private void loadAllLaptops() {
     }
 
 }

@@ -1,5 +1,6 @@
 package bitlord.dao;
 
+import bitlord.dao.custom.impl.LaptopDaoImpl;
 import bitlord.dao.custom.impl.StudentDaoImpl;
 
 public class DaoFactory {
@@ -30,7 +31,7 @@ public class DaoFactory {
                 return  null;
 
             case LAPTOP:
-                return null;
+                return (T) new LaptopDaoImpl();
 
             case PROGRAM:
                 return null;

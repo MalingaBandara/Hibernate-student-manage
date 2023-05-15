@@ -86,6 +86,11 @@
                </columns>
             </TableView>
             <ComboBox fx:id="cmbStudent" layoutX="24.0" layoutY="36.0" prefHeight="27.0" prefWidth="164.0" promptText="Student" />
+            <Button fx:id="btnLaptopSave" layoutX="386.0" layoutY="37.0" mnemonicParsing="false" onAction="#btnSaveLaptopOnAction" prefHeight="27.0" prefWidth="169.0" text="Save Laptop">
+               <font>
+                  <Font name="Arial Bold" size="13.0" />
+               </font>
+            </Button>
          </children></AnchorPane>
       <AnchorPane layoutX="682.0" layoutY="353.0" prefHeight="320.0" prefWidth="662.0" style="-fx-background-color: #ecf0f1;" />
    </children>
