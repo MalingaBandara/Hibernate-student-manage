@@ -3,6 +3,7 @@ package bitlord.controller;
 import bitlord.bo.BoFactory;
 import bitlord.bo.custom.StudentBo;
 import bitlord.dto.StudentDto;
+import bitlord.entity.Student;
 import bitlord.view.tm.StudentTM;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -30,6 +31,13 @@ public class MainFormController {
     public TableColumn colSeeMore;
     public TableColumn colDelete;
     public Button btnStudentSave;
+    public TextField txtLapBrand;
+    public TextField txtLapSearch;
+    public TableView tblLaptops;
+    public TableColumn colLapId;
+    public TableColumn colBrand;
+    public TableColumn colDeleteLap;
+    public ComboBox cmbStudent;
 
 
     public void initialize() throws SQLException, ClassNotFoundException {
@@ -42,7 +50,9 @@ public class MainFormController {
                 colDelete.setCellValueFactory( new PropertyValueFactory<>("deleteBtn") );
 
 
-            loadAllStudents( );
+                    loadAllStudents( );
+
+            loadAllStudentsForLaptopSection(); // assign student data to combo box in laptop ui
 
       // ------------------ Listener ------------------
 
@@ -61,11 +71,25 @@ public class MainFormController {
         } );
 
       // ------------------ Listener ------------------
-
-
+        
   }
 
-private StudentTM selectedStudentTm = null ; // assign selected values
+  
+    private void loadAllStudentsForLaptopSection() throws SQLException, ClassNotFoundException  {
+
+        ObservableList< Long > obList = FXCollections.observableArrayList(); // Create List to assign particular student Ids
+
+                for ( StudentDto dto : studentBo.findAllStudents() ) {
+
+                    obList.add( dto.getId() ); // add ids to list
+
+                }
+
+        cmbStudent.setItems( obList );
+        
+    }
+
+    private StudentTM selectedStudentTm = null ; // assign selected values
 
 
     public void newStudentOnAction(ActionEvent actionEvent) {
@@ -148,8 +172,7 @@ private StudentTM selectedStudentTm = null ; // assign selected values
                             new Alert( Alert.AlertType.INFORMATION, "Student Updated" ).show();
                                         selectedStudentTm = null; // remove selected recode
                                     btnStudentSave.setText( "Save Student" );
-                            loadAllStudents();
-
+                                loadAllStudents();
                         }catch ( Exception e ){
                             new Alert( Alert.AlertType.ERROR, "Try Again" ).show();
                         }
@@ -165,8 +188,8 @@ private StudentTM selectedStudentTm = null ; // assign selected values
 
                                     studentBo.saveStudent( dto );
                                     new Alert( Alert.AlertType.INFORMATION, "Student Saved" ).show();
-                                    loadAllStudents();
-
+                                        loadAllStudents();
+                                    loadAllStudentsForLaptopSection(); // load student in to laptop combo box
                                 }catch ( Exception e ){
                                     new Alert( Alert.AlertType.ERROR, "Try Again" ).show();
                                 }
