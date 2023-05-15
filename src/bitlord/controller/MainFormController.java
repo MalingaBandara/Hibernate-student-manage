@@ -2,8 +2,10 @@ package bitlord.controller;
 
 import bitlord.bo.BoFactory;
 import bitlord.bo.custom.LaptopBo;
+import bitlord.bo.custom.ProgramBo;
 import bitlord.bo.custom.StudentBo;
 import bitlord.dto.CreateLaptopDto;
+import bitlord.dto.ProgramDto;
 import bitlord.dto.StudentDto;
 import bitlord.entity.Student;
 import bitlord.view.tm.StudentTM;
@@ -23,11 +25,6 @@ import java.util.Optional;
 public class MainFormController {
     public TextField txtName;
     public TextField txtContact;
-
-  private final StudentBo studentBo = BoFactory.getInstance().getBo(BoFactory.BoType.STUDENT);
-
-  private final LaptopBo laptopBo = BoFactory.getInstance().getBo(BoFactory.BoType.LAPTOP);
-
     public TableView<StudentTM> tblStudents;
     public TableColumn colStudentId;
     public TableColumn colStudentName;
@@ -43,7 +40,34 @@ public class MainFormController {
     public TableColumn colDeleteLap;
     public ComboBox<Long> cmbStudent;
     public Button btnLaptopSave;
+    public TextField txtProgramTitle;
+    public TextField txtProgramCredit;
 
+    private final StudentBo studentBo = BoFactory.getInstance().getBo(BoFactory.BoType.STUDENT);
+
+    private final LaptopBo laptopBo = BoFactory.getInstance().getBo(BoFactory.BoType.LAPTOP);
+    private final ProgramBo programBo = BoFactory.getInstance().getBo(BoFactory.BoType.PROGRAM);
+
+
+    public void btnSaveProogramOnAction(ActionEvent actionEvent) {
+
+        try{
+
+            programBo.saveProgram(  new ProgramDto( txtProgramTitle.getText(), Integer.parseInt( txtProgramCredit.getText() ) ) );
+
+            new Alert( Alert.AlertType.INFORMATION, "Program Saved" ).show();
+
+            loadAllPrograms();
+
+        }catch ( Exception e ){
+            new Alert( Alert.AlertType.ERROR, "Try Again" ).show();
+        }
+
+    }
+
+    private void loadAllPrograms() {
+        // to be implemented!
+    }
 
     private void loadAllStudentsForLaptopSection() throws SQLException, ClassNotFoundException  {
 
@@ -219,6 +243,8 @@ public class MainFormController {
     }
 
     private void loadAllLaptops() {
+        // to be implemented!
     }
+
 
 }

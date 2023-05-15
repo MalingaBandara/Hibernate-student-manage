@@ -54,7 +54,48 @@
             </TableView>
          </children>
       </AnchorPane>
-      <AnchorPane layoutX="14.0" layoutY="353.0" prefHeight="320.0" prefWidth="648.0" style="-fx-background-color: #ecf0f1;" />
+      <AnchorPane layoutX="14.0" layoutY="353.0" prefHeight="320.0" prefWidth="648.0" style="-fx-background-color: #7f8c8d;">
+         <children>
+            <Label layoutX="9.0" layoutY="5.0" text="Program Management" textFill="#20009e">
+               <font>
+                  <Font name="Arial Bold" size="13.0" />
+               </font>
+            </Label>
+            <Separator layoutX="12.0" layoutY="23.0" prefHeight="4.0" prefWidth="523.0" />
+            <TextField fx:id="txtProgramTitle" layoutX="12.0" layoutY="35.0" promptText="Program Title">
+               <font>
+                  <Font name="Arial Bold" size="13.0" />
+               </font>
+            </TextField>
+            <TextField fx:id="txtProgramCredit" layoutX="186.0" layoutY="35.0" promptText="Credit">
+               <font>
+                  <Font name="Arial Bold" size="13.0" />
+               </font>
+            </TextField>
+            <Button layoutX="360.0" layoutY="34.0" mnemonicParsing="false" onAction="#btnSaveProogramOnAction" prefHeight="27.0" prefWidth="169.0" text="Save Program">
+               <font>
+                  <Font name="Arial Bold" size="13.0" />
+               </font>
+            </Button>
+            <Button layoutX="533.0" layoutY="11.0" mnemonicParsing="false" text="+ new Program">
+               <font>
+                  <Font name="Arial Bold" size="13.0" />
+               </font>
+            </Button>
+            <TextField layoutX="12.0" layoutY="74.0" prefHeight="29.0" prefWidth="615.0" promptText="search here">
+               <font>
+                  <Font name="Arial Bold" size="13.0" />
+               </font>
+            </TextField>
+            <TableView layoutX="12.0" layoutY="113.0" prefHeight="200.0" prefWidth="615.0">
+               <columns>
+                  <TableColumn prefWidth="126.99993896484375" text="Program Id" />
+                  <TableColumn prefWidth="110.00003051757812" text="Title" />
+                  <TableColumn prefWidth="210.0" text="Credit" />
+                  <TableColumn prefWidth="168.0" text="Delete" />
+               </columns>
+            </TableView>
+         </children></AnchorPane>
       <AnchorPane layoutX="676.0" layoutY="15.0" prefHeight="320.0" prefWidth="662.0" style="-fx-background-color: #7f8c8d;">
          <children>
             <Label layoutX="14.0" layoutY="6.0" text="Laptop Management" textFill="#20009e">
