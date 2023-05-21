@@ -108,4 +108,18 @@ public class ProgramDaoImpl implements ProgramDao {
         }
 
     }
+
+    @Override
+    public List<Registration> findAllRegistrations() {
+
+        try ( Session session = HibernateUtil.getInstance().openSession() ) {
+
+            String hql = "FROM Registration";
+
+            Query<Registration> query = session.createQuery(hql, Registration.class);
+
+            return query.list();
+        }
+    }
+
 }

@@ -3,10 +3,13 @@ package bitlord.bo.custom.impl;
 import bitlord.bo.custom.ProgramBo;
 import bitlord.dao.DaoFactory;
 import bitlord.dao.custom.ProgramDao;
+import bitlord.dto.CustomRegistrationData;
 import bitlord.dto.ProgramDto;
 import bitlord.entity.Program;
+import bitlord.entity.Registration;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class ProgramBoImpl implements ProgramBo {
@@ -34,6 +37,26 @@ public class ProgramBoImpl implements ProgramBo {
     @Override
     public void register(long studentId, long programId) {
         programDao.register( studentId, programId );
+    }
+
+    @Override
+    public List<CustomRegistrationData> findAllRegistrations() {
+
+        List<CustomRegistrationData> data = new ArrayList<>();
+
+                for ( Registration temp : programDao.findAllRegistrations() ) {
+
+                    data. add(
+                            new CustomRegistrationData(
+                                    temp.getRegDate(),
+                                    temp.getStudent().getName(),
+                                    temp.getProgram().getTitle()
+                                )
+                    );
+                }
+
+        return data;
+
     }
 
 

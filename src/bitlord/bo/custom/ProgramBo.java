@@ -1,6 +1,7 @@
 package bitlord.bo.custom;
 
-import bitlord.dto.CreateLaptopDto;
+
+import bitlord.dto.CustomRegistrationData;
 import bitlord.dto.ProgramDto;
 
 import java.sql.SQLException;
@@ -13,5 +14,7 @@ public interface ProgramBo {
      public List<Long> findAllStudentIds();
 
      public void register( long studentId, long programId );
+
+     List<CustomRegistrationData> findAllRegistrations();
 
 }

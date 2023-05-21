@@ -5,6 +5,7 @@ import bitlord.bo.custom.LaptopBo;
 import bitlord.bo.custom.ProgramBo;
 import bitlord.bo.custom.StudentBo;
 import bitlord.dto.CreateLaptopDto;
+import bitlord.dto.CustomRegistrationData;
 import bitlord.dto.ProgramDto;
 import bitlord.dto.StudentDto;
 import bitlord.entity.Student;
@@ -48,7 +49,7 @@ public class MainFormController {
     private final LaptopBo laptopBo = BoFactory.getInstance().getBo(BoFactory.BoType.LAPTOP);
     private final ProgramBo programBo = BoFactory.getInstance().getBo(BoFactory.BoType.PROGRAM);
     public TextField txtLapSearch1;
-    public TableView tblRegistration;
+    public TableView<CustomRegistrationData> tblRegistration;
     public TableColumn colRegId;
     public TableColumn colDate;
     public TableColumn colStudent;
@@ -93,6 +94,14 @@ public class MainFormController {
         colDelete.setCellValueFactory( new PropertyValueFactory<>("deleteBtn") );
 
 
+        // Registrations
+        colDate.setCellValueFactory( new PropertyValueFactory<>("date") );
+        colStudent.setCellValueFactory( new PropertyValueFactory<>("student") );
+        colProgram.setCellValueFactory( new PropertyValueFactory<>("title") );
+
+        loadAllRegistrations();
+
+
         loadAllStudents( );
 
         loadAllStudentsForLaptopSection(); // assign student data to combo box in laptop ui
@@ -116,7 +125,6 @@ public class MainFormController {
         } );
 
         // ------------------ Listener ------------------
-
     }
 
     public void btnSaveLaptopOnAction(ActionEvent actionEvent) {
@@ -282,6 +290,11 @@ public class MainFormController {
     }
 
     private void loadAllRegistrations() {
+
+        ObservableList<CustomRegistrationData> list = FXCollections.observableArrayList(programBo.findAllRegistrations());
+
+        tblRegistration.setItems(list);
+
     }
 }
 
