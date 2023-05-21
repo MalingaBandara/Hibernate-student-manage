@@ -47,27 +47,15 @@ public class MainFormController {
 
     private final LaptopBo laptopBo = BoFactory.getInstance().getBo(BoFactory.BoType.LAPTOP);
     private final ProgramBo programBo = BoFactory.getInstance().getBo(BoFactory.BoType.PROGRAM);
+    public TextField txtLapSearch1;
+    public TableView tblRegistration;
+    public TableColumn colRegId;
+    public TableColumn colDate;
+    public TableColumn colStudent;
+    public TableColumn colProgram;
+    public ComboBox<Long> cmbPrograms;
+    public ComboBox<Long> cmbStudentsForProgram;
 
-
-    public void btnSaveProogramOnAction(ActionEvent actionEvent) {
-
-        try{
-
-            programBo.saveProgram(  new ProgramDto( txtProgramTitle.getText(), Integer.parseInt( txtProgramCredit.getText() ) ) );
-
-            new Alert( Alert.AlertType.INFORMATION, "Program Saved" ).show();
-
-            loadAllPrograms();
-
-        }catch ( Exception e ){
-            new Alert( Alert.AlertType.ERROR, "Try Again" ).show();
-        }
-
-    }
-
-    private void loadAllPrograms() {
-        // to be implemented!
-    }
 
     private void loadAllStudentsForLaptopSection() throws SQLException, ClassNotFoundException  {
 
@@ -80,117 +68,20 @@ public class MainFormController {
                 }
 
         cmbStudent.setItems( obList );
-        
+                cmbStudentsForProgram.setItems( obList );
+
+    }
+
+    private void loadProgramsForRegistrationSection() throws SQLException, ClassNotFoundException  {
+
+        ObservableList< Long > obList = FXCollections.observableArrayList( programBo.findAllStudentIds() ); // Create List to assign particular student Ids
+
+        cmbPrograms.setItems( obList ); // set items
+
     }
 
     private StudentTM selectedStudentTm = null ; // assign selected values
 
-
-    public void newStudentOnAction(ActionEvent actionEvent) {
-
-        btnStudentSave.setText( "Save Student" );
-        selectedStudentTm = null; // remove selected recode
-
-    }
-
-    private void loadAllStudents() throws SQLException, ClassNotFoundException {
-
-        ObservableList< StudentTM > tmList = FXCollections.observableArrayList();
-
-        for ( StudentDto dto : studentBo.findAllStudents() ) {
-
-            Button deleteButton = new Button( "Delete" ); // create button  [import javafx.scene.control.*;] <-- use this
-            deleteButton.setStyle("-fx-background-color: #c0392b");
-            Button seeMoreButton = new Button( "See More" ); // create button
-            seeMoreButton.setStyle("-fx-background-color: #298069");
-
-            StudentTM tm = new StudentTM(dto.getId(), dto.getName(), dto.getContact(), deleteButton, seeMoreButton );
-
-            tmList.add( tm );
-
-
-            // delete student
-            deleteButton.setOnAction( e-> {
-
-                Alert alert = new Alert( Alert.AlertType.CONFIRMATION, "Are you sure?" , ButtonType.YES, ButtonType.NO); // ask confirmation from user
-
-                Optional<ButtonType> selectedDuttonData = alert.showAndWait(); // asign
-
-                        if (selectedDuttonData.get().equals( ButtonType.YES ) ) {
-
-                                try {
-
-                                    studentBo.deleteStudentById( tm.getId() );
-
-                                    new Alert( Alert.AlertType.INFORMATION, "Student Deleted" ).show();
-                                    loadAllStudents();
-
-                                } catch (Exception exception ){
-                                    new Alert( Alert.AlertType.ERROR, "Try Again" ).show();
-                                }
-
-                        }
-
-            } ); // **************
-
-
-        }
-
-        tblStudents.setItems( tmList );
-            tblStudents.refresh(); // refresh table
-    }
-
-
-    public void btnSaveStudentOnAction(ActionEvent actionEvent) {
-
-        StudentDto dto = new StudentDto();
-
-        dto.setName( txtName.getText() );
-        dto.setContact( txtContact.getText() );
-
-            // -------------- Update Student -------- //
-
-                    if ( btnStudentSave.getText().equals( "Update Student" ) ) {
-
-                        if ( selectedStudentTm == null ){ // if user not selected
-                            new Alert( Alert.AlertType.ERROR, "Try Again" ).show();
-                            return;
-                        }
-
-                        try{
-
-                            dto.setId(selectedStudentTm.getId() );
-
-                            studentBo.updateStudent( dto );
-
-                            new Alert( Alert.AlertType.INFORMATION, "Student Updated" ).show();
-                                        selectedStudentTm = null; // remove selected recode
-                                    btnStudentSave.setText( "Save Student" );
-                                loadAllStudents();
-                        }catch ( Exception e ){
-                            new Alert( Alert.AlertType.ERROR, "Try Again" ).show();
-                        }
-
-                    }
-
-            // -------------- ***** -------- //
-
-                                // Save student
-                            else {
-
-                                try{
-
-                                    studentBo.saveStudent( dto );
-                                    new Alert( Alert.AlertType.INFORMATION, "Student Saved" ).show();
-                                        loadAllStudents();
-                                    loadAllStudentsForLaptopSection(); // load student in to laptop combo box
-                                }catch ( Exception e ){
-                                    new Alert( Alert.AlertType.ERROR, "Try Again" ).show();
-                                }
-
-                            } // ********
-
-    }
 
     public void initialize() throws SQLException, ClassNotFoundException {
 
@@ -205,6 +96,8 @@ public class MainFormController {
         loadAllStudents( );
 
         loadAllStudentsForLaptopSection(); // assign student data to combo box in laptop ui
+
+        loadProgramsForRegistrationSection(); // assign program ids to registration ui
 
         // ------------------ Listener ------------------
 
@@ -246,5 +139,149 @@ public class MainFormController {
         // to be implemented!
     }
 
+    public void newStudentOnAction(ActionEvent actionEvent) {
 
+        btnStudentSave.setText( "Save Student" );
+        selectedStudentTm = null; // remove selected recode
+
+    }
+
+    private void loadAllStudents() throws SQLException, ClassNotFoundException {
+
+        ObservableList< StudentTM > tmList = FXCollections.observableArrayList();
+
+        for ( StudentDto dto : studentBo.findAllStudents() ) {
+
+            Button deleteButton = new Button( "Delete" ); // create button  [import javafx.scene.control.*;] <-- use this
+            deleteButton.setStyle("-fx-background-color: #c0392b");
+            Button seeMoreButton = new Button( "See More" ); // create button
+            seeMoreButton.setStyle("-fx-background-color: #298069");
+
+            StudentTM tm = new StudentTM(dto.getId(), dto.getName(), dto.getContact(), deleteButton, seeMoreButton );
+
+            tmList.add( tm );
+
+
+            // delete student
+            deleteButton.setOnAction( e-> {
+
+                Alert alert = new Alert( Alert.AlertType.CONFIRMATION, "Are you sure?" , ButtonType.YES, ButtonType.NO); // ask confirmation from user
+
+                Optional<ButtonType> selectedDuttonData = alert.showAndWait(); // asign
+
+                if (selectedDuttonData.get().equals( ButtonType.YES ) ) {
+
+                    try {
+
+                        studentBo.deleteStudentById( tm.getId() );
+
+                        new Alert( Alert.AlertType.INFORMATION, "Student Deleted" ).show();
+                        loadAllStudents();
+
+                    } catch (Exception exception ){
+                        new Alert( Alert.AlertType.ERROR, "Try Again" ).show();
+                    }
+
+                }
+
+            } ); // **************
+
+
+        }
+
+        tblStudents.setItems( tmList );
+        tblStudents.refresh(); // refresh table
+    }
+
+
+    public void btnSaveStudentOnAction(ActionEvent actionEvent) {
+
+        StudentDto dto = new StudentDto();
+
+        dto.setName( txtName.getText() );
+        dto.setContact( txtContact.getText() );
+
+        // -------------- Update Student -------- //
+
+        if ( btnStudentSave.getText().equals( "Update Student" ) ) {
+
+            if ( selectedStudentTm == null ){ // if user not selected
+                new Alert( Alert.AlertType.ERROR, "Try Again" ).show();
+                return;
+            }
+
+            try{
+
+                dto.setId(selectedStudentTm.getId() );
+
+                studentBo.updateStudent( dto );
+
+                new Alert( Alert.AlertType.INFORMATION, "Student Updated" ).show();
+                selectedStudentTm = null; // remove selected recode
+                btnStudentSave.setText( "Save Student" );
+                loadAllStudents();
+            }catch ( Exception e ){
+                new Alert( Alert.AlertType.ERROR, "Try Again" ).show();
+            }
+
+        }
+
+        // -------------- ***** -------- //
+
+        // Save student
+        else {
+
+            try{
+
+                studentBo.saveStudent( dto );
+                new Alert( Alert.AlertType.INFORMATION, "Student Saved" ).show();
+                loadAllStudents();
+                loadAllStudentsForLaptopSection(); // load student in to laptop combo box
+            }catch ( Exception e ){
+                new Alert( Alert.AlertType.ERROR, "Try Again" ).show();
+            }
+
+        } // ********
+
+    }
+
+    public void btnSaveProogramOnAction(ActionEvent actionEvent) {
+
+        try{
+
+            programBo.saveProgram(  new ProgramDto( txtProgramTitle.getText(), Integer.parseInt( txtProgramCredit.getText() ) ) );
+
+            new Alert( Alert.AlertType.INFORMATION, "Program Saved" ).show();
+
+            loadAllPrograms();
+
+        }catch ( Exception e ){
+            new Alert( Alert.AlertType.ERROR, "Try Again" ).show();
+        }
+
+    }
+
+    private void loadAllPrograms() {
+        // to be implemented!
+    }
+
+    public void btnRegisterOnAction(ActionEvent actionEvent) {
+
+        try{
+
+            programBo.register( cmbStudentsForProgram.getValue() , cmbPrograms.getValue() );
+
+            new Alert( Alert.AlertType.INFORMATION, "Registered Saved" ).show();
+
+            loadAllRegistrations();
+
+        }catch ( Exception e ){
+            new Alert( Alert.AlertType.ERROR, "Try Again" ).show();
+        }
+
+    }
+
+    private void loadAllRegistrations() {
+    }
 }
+

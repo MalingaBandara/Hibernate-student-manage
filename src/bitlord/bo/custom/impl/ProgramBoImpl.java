@@ -7,6 +7,7 @@ import bitlord.dto.ProgramDto;
 import bitlord.entity.Program;
 
 import java.sql.SQLException;
+import java.util.List;
 
 public class ProgramBoImpl implements ProgramBo {
 
@@ -24,4 +25,16 @@ public class ProgramBoImpl implements ProgramBo {
         programDao.save( program );
 
     }
+
+    @Override
+    public List<Long> findAllStudentIds() {
+        return programDao.findAllProgramsIds();
+    }
+
+    @Override
+    public void register(long studentId, long programId) {
+        programDao.register( studentId, programId );
+    }
+
+
 }

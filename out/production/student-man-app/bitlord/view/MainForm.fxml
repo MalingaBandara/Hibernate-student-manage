@@ -133,6 +133,28 @@
                </font>
             </Button>
          </children></AnchorPane>
-      <AnchorPane layoutX="682.0" layoutY="353.0" prefHeight="320.0" prefWidth="662.0" style="-fx-background-color: #ecf0f1;" />
+      <AnchorPane layoutX="676.0" layoutY="353.0" prefHeight="320.0" prefWidth="662.0" style="-fx-background-color: #7f8c8d;">
+         <children>
+            <TextField fx:id="txtLapSearch1" layoutX="23.0" layoutY="65.0" prefHeight="29.0" prefWidth="615.0" promptText="search here">
+               <font>
+                  <Font name="Arial" size="13.0" />
+               </font>
+            </TextField>
+            <TableView fx:id="tblRegistration" layoutX="23.0" layoutY="104.0" prefHeight="200.0" prefWidth="615.0">
+               <columns>
+                  <TableColumn fx:id="colRegId" prefWidth="133.0" text="#" />
+                  <TableColumn fx:id="colDate" minWidth="0.0" prefWidth="150.0" text="Date" />
+                  <TableColumn fx:id="colStudent" prefWidth="160.0" text="Student" />
+                  <TableColumn fx:id="colProgram" prefWidth="171.0" text="Program" />
+               </columns>
+            </TableView>
+            <ComboBox fx:id="cmbStudentsForProgram" layoutX="26.0" layoutY="26.0" prefHeight="27.0" prefWidth="164.0" promptText="Student" />
+            <Button layoutX="465.0" layoutY="26.0" mnemonicParsing="false" onAction="#btnRegisterOnAction" prefHeight="27.0" prefWidth="169.0" text="Register">
+               <font>
+                  <Font name="Arial Bold" size="13.0" />
+               </font>
+            </Button>
+            <ComboBox fx:id="cmbPrograms" layoutX="199.0" layoutY="27.0" prefHeight="27.0" prefWidth="164.0" promptText="Program" />
+         </children></AnchorPane>
    </children>
 </AnchorPane>
